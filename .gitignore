@@ -42,6 +42,16 @@
 *.idb
 *.pdb
 
+#VS project files
+*.sln
+*.vcxproj
+*.vcxproj.*
+*.log
+*.tlog
+*.lastbuildstate
+Debug
+.vs
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
