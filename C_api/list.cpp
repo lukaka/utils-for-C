@@ -390,6 +390,7 @@ int List_delete_elem_by_index(pNODE_t Head, int index)
 }
 
 /*删除整个链表*/
+/*Notes: 该函数还有问题！！！*/
 int List_delete(pNODE_t Head)
 {
 	if (Head == NULL)
@@ -398,16 +399,18 @@ int List_delete(pNODE_t Head)
 		return -1;
 	}
 
-	pNODE_t p = Head;
+	pNODE_t p = Head->next;
 	pNODE_t node;
 	while (p)
 	{
 		node = p;
-		p = p->next;
-		node->next = NULL;
-		free(node);
-	}
 
+		p = p->next;
+		
+		free(node);
+		node = NULL;
+	}
+	Head->next = NULL;
 	printf("List delete success!\n");
 	return 0;
 }
@@ -422,7 +425,7 @@ void List_test(void)
 	List_insert_by_head(list, 7);
 	List_insert_by_head(list, 8);
 	List_insert_by_tail(list, 4);
-	List_insert_by_tail(list, 3);
+	//List_insert_by_tail(list, 3);
 	List_insert_by_tail(list, 2);
 
 	printf("get list head:%d\n", List_get_elem_by_head(list));
@@ -437,5 +440,5 @@ void List_test(void)
 	List_print(list);
 	List_delete_elem_by_tail(list);
 	List_print(list);
-//	List_delete(list);
+	List_delete(list);
 }
