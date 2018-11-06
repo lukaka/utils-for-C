@@ -17,6 +17,12 @@ unsigned int isDigital(char num)
 		return 0;
 }
 
+/*判断是不是字母*/
+unsigned int isAlpha(char a)
+{
+	return 0;
+}
+
 /*字符串的数字转换成整型数字*/
 // "123" --> 123
 int str2int(char *str)
