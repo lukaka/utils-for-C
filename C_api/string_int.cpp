@@ -3,12 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "string_int.h"
 
 
 
 //------------------数字数组操作---------------//
-/*判断是否是'0'-'9'*/
+/*判断是否是'0'-'9'
+返回值： 1   是数字
+		 0	 不是数字
+*/
 unsigned int isDigital(char num)
 {
 	if (num >= '0' && num <= '9')
@@ -18,6 +21,9 @@ unsigned int isDigital(char num)
 }
 
 /*判断是不是字母*/
+/*返回值： 1   是数字
+		   0   不是数字
+*/
 unsigned int isAlpha(char a)
 {
 	return 0;
@@ -28,6 +34,7 @@ unsigned int isAlpha(char a)
 int str2int(char *str)
 {
 	int num = 0;
+	char *ptr = str;
 
 	if (str == NULL)
 	{
@@ -35,18 +42,69 @@ int str2int(char *str)
 		return -1;
 	}
 
-	while (*str)
+	while (*ptr)
 	{
-		if (isDigital(*str))
+		if (isDigital(*ptr))
 		{
 			num *= 10;
-			num += (*str - '0');
+			num += (*ptr - '0');
 		}
-		str++;
+		ptr++;
 	}
-	printf("str2int, str: %s, int: %d\n",str,num);
+	//printf("str2int, str: %s, int: %d\n",ptr,num);
 	
 	return num;
+}
+
+/*整型数据转换成字符串
+注：函数调用者需要保证str执指针的合法性
+*/
+int int2str(int num, char *str)
+{
+	char num_str[1024] = {0};//TODO:替换成malloc分配的内存
+	int num_tmp = num;
+	int i = 0;
+	if (str == NULL)
+	{
+		printf("ERROR: invalid para.line:%d, func=%s\n",__LINE__,__FUNCTION__);
+		return -1;
+	}
+	while (num_tmp)
+	{
+		str[i] = (num_tmp % 10) + '0';
+		num_tmp /= 10;
+		i++;
+	}
+	str[i] = '\0';
+
+	str_reverse(str);
+	//printf("int: %d, output str:%s\n",num, str);
+
+	return 0;
+}
+
+/*字符串反转*/
+int str_reverse(char *str)
+{
+	int len = 0;
+	char *ptr = str;
+	char tmp;
+
+	if (str == NULL)
+	{
+		printf("ERROR: invalid para.line:%d, func=%s\n", __LINE__, __FUNCTION__);
+		return -1;
+	}
+	len = strlen(str);
+	ptr = str;
+	for (int i = 0; i < len / 2; i++)
+	{
+		tmp = ptr[i];
+		ptr[i] = ptr[len - i - 1];
+		ptr[len - i - 1] = tmp;
+	}
+
+	return 0;
 }
 
 /*整型数组去重*/
@@ -191,8 +249,16 @@ int Int_docker_top2_test()
 int string_int_test()
 {
 	char num_str[10] = "12345";
+	char str[10] = {0};
+
 	Int_docker_top2_test();
-	printf("-----str2int-----\n  str:%s, int:%d",num_str,str2int(num_str));
+	printf("\n-----str2int-----\n  str:%s, int:%d\n",num_str,str2int(num_str));
+
+	int2str(str2int(num_str), str);
+	printf("\n-----int2str-----\n  int:%d, str:%s\n", str2int(num_str), str);
+
+	str_reverse(num_str);
+	printf("\n-----reverse-----\n  output:%s\n", num_str);
 
 	return 0;
 }
